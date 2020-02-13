@@ -3,7 +3,7 @@ package gameEngine;
 import editMe.Player;
 import javafx.scene.paint.Color;
 
-public class Enemy implements BoardObject, EnemyInterface {
+public class Enemy1 implements BoardObject, EnemyInterface {
 	
 	Color color;
 	String shape;
@@ -12,7 +12,7 @@ public class Enemy implements BoardObject, EnemyInterface {
 	// Put enemy "memory" here
 	Direction currDir;
 
-	public Enemy() {
+	public Enemy1() {
 		color = Color.rgb(153, 0, 153);
 		shape = "circle";
 		currDir = new Stay();
@@ -36,30 +36,7 @@ public class Enemy implements BoardObject, EnemyInterface {
 	}
 	
 	public Direction move() {
-		if(info.getMyX() == 0) {
-			if(info.getMyY() == 0) {
-				currDir = new Right();
-			}
-			else {
-				currDir = new Up();
-			}
-		}
-		else if(info.getMyX() == 1) {
-			if(info.getMyY() == 0) {
-				currDir = new Right();
-			}
-			else {
-				currDir = new Left();
-			}
-		}
-		else if(info.getMyX() == 2){
-			if(info.getMyY() == 2) {
-				currDir = new Left();
-			}
-			else{
-				currDir = new Down();
-			}
-		}
+		currDir = new Stay();
 		return currDir;
 	}
 	

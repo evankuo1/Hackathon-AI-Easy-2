@@ -107,44 +107,46 @@ public class Controller {
 		// For every object
 		for (int i = 0; i < objList.size(); i++) {
 			
-			// Get the object and get its move/position
-			BoardObject anObj = (BoardObject) objList.get(i);
-			Direction theMove = anObj.move();
-			List<Integer> pos = getObjPos(anObj);
-			
-			// If the object moved up
-			if (theMove instanceof Up) {
-				// Check if it can move up
-				if (pos.get(1) - 1 >= 0) {
-					// Move the object
-					moveObject(pos.get(0), pos.get(1) - 1, anObj);
+			if (!(objList.get(i) instanceof TileObject)) {
+				// Get the object and get its move/position
+				BoardObject anObj = (BoardObject) objList.get(i);
+				Direction theMove = anObj.move();
+				List<Integer> pos = getObjPos(anObj);
+				
+				// If the object moved up
+				if (theMove instanceof Up) {
+					// Check if it can move up
+					if (pos.get(1) - 1 >= 0) {
+						// Move the object
+						moveObject(pos.get(0), pos.get(1) - 1, anObj);
+					}
 				}
-			}
-			
-			// If the object moved down
-			else if (theMove instanceof Down) {
-				// Check if it can move down
-				if (pos.get(1) + 1 < model.getBoardHeight()) {
-					// Move the object
-					moveObject(pos.get(0), pos.get(1) + 1, anObj);
+				
+				// If the object moved down
+				else if (theMove instanceof Down) {
+					// Check if it can move down
+					if (pos.get(1) + 1 < model.getBoardHeight()) {
+						// Move the object
+						moveObject(pos.get(0), pos.get(1) + 1, anObj);
+					}
 				}
-			}
-			
-			// If the object moved left
-			else if (theMove instanceof Left) {
-				// Check if it can move left
-				if (pos.get(0) - 1 >= 0) {
-					// Move the object
-					moveObject(pos.get(0) - 1, pos.get(1), anObj);
+				
+				// If the object moved left
+				else if (theMove instanceof Left) {
+					// Check if it can move left
+					if (pos.get(0) - 1 >= 0) {
+						// Move the object
+						moveObject(pos.get(0) - 1, pos.get(1), anObj);
+					}
 				}
-			}
-			
-			// IF the object moved right
-			else if (theMove instanceof Right){
-				// Check if it can move right
-				if (pos.get(1) + 1 < model.getBoardWidth()) {
-					// Move the object
-					moveObject(pos.get(0) + 1, pos.get(1), anObj);
+				
+				// IF the object moved right
+				else if (theMove instanceof Right){
+					// Check if it can move right
+					if (pos.get(0) + 1 < model.getBoardWidth()) {
+						// Move the object
+						moveObject(pos.get(0) + 1, pos.get(1), anObj);
+					}
 				}
 			}
 		}
@@ -171,12 +173,12 @@ public class Controller {
 			winLoss = new Win();
 		}
 		
-		else if (fC.equals("player") && sC.equals("nothingSpace")) {
+		else if (fC.equals("player") && sC.equals("nothing")) {
 			model.setPosition(x1, y1, first);
 			model.setPosition(x3, y3, second);
 		}
 		
-		else if (fC.equals("nothingSpace") && sC.equals("player")) {
+		else if (fC.equals("nothing") && sC.equals("player")) {
 			model.setPosition(x2, y2, second);
 			model.setPosition(x3, y3, first);
 		}
@@ -228,6 +230,32 @@ public class Controller {
 				((Player) theObjs.get(i).get(2)).initializePlayerView(this);
 			}
 		}
+	}
+	
+	public void giveEnemiesView() {
+		
+			// Gets a list of the objects
+			List<List> theObjs = getObjectsWithPositions();
+			
+			Player player = new Player();
+			List<EnemyInterface> enemyList = new ArrayList<EnemyInterface>();
+				
+			// Loop through the objects
+			for (int i = 0; i < theObjs.size(); i++) {
+				// If that object is the player
+				if (theObjs.get(i).get(2) instanceof Player) {
+					player = (Player) theObjs.get(i).get(2);
+				}
+				
+				else if (theObjs.get(i).get(2) instanceof EnemyInterface) {
+					// Give the player a playerview
+					enemyList.add((EnemyInterface) theObjs.get(i).get(2));
+				}
+			}
+			
+			for (int i = 0; i < enemyList.size(); i++) {
+				enemyList.get(i).initializeEnemyView(this, player);
+			}
 	}
 	
 	// Returns an instance of this
